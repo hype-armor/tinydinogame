@@ -112,7 +112,7 @@ class Dinosaur {
         this.score.innerText = parseInt(this.score.innerText) + 3;
 
         obstacles.forEach(obstacle => {
-            obstacle.update_speed(parseInt(this.score.innerText) / 100);
+            obstacle.update_speed((parseInt(this.score.innerText) / 100) + 10);
         });
     }
 
@@ -132,10 +132,10 @@ class Obstacle {
         this.element.style.height = this.height + "px";
         this.element.style.backgroundColor = this.color;
         this.element.style.position = "absolute";
-        this.element.style.left = getRandomInt(1000,3000) + "px";
+        this.element.style.left = getRandomInt(1500,3000) + "px";
         this.element.style.top = (rect.top - 100) + (100 - this.height) + 'px';
         document.body.appendChild(this.element);
-        this.speed = 10;
+        this.speed = 0;
         this.score = document.getElementById('score');
         this.init();
     }
@@ -152,13 +152,19 @@ class Obstacle {
                 this.element.style.left = parseInt(this.element.style.left) - this.speed + 'px';
             }
             else {
-                this.element.style.left = getMostRightObstacle() + 1500 + getRandomInt(this.speed * 4,this.speed * 9) + "px";
+                this.element.style.left = getMostRightObstacle() + getRandomInt(1500,3000) + getRandomInt(this.speed * 4,this.speed * 9) + "px";
             }
         }, 20);
     }
 
     update_speed(speed) {
-        this.speed = speed;
+        if (this.speed < 10.0) {
+               this.speed = speed + 10;
+        }
+        else {
+            this.speed = speed;
+        }
+
     }
 
     collision() {
